@@ -7,28 +7,26 @@ from .models import Teacher, Student, Remarks
 class RemarkNode(DjangoObjectType):
     class Meta:
         model = Remarks
-        filter_fields = ['favorite']
-        interfaces = (relay.Node, )
+        filter_fields = {
+            'favorite': ['exact']
+        }        
+        interfaces = (relay.Node, )    
 
-
-class TeacherNode(DjangoObjectType):
-    favorite = graphene.Field(RemarkNode)
-
-    class Meta:
-        model = Teacher
-        filter_fields = ['name', 'subject']
-        interfaces = (relay.Node, )
-
-
-class StudentNode(DjangoObjectType):
+class StudentNode(DjangoObjectType):     
     class Meta:
         model = Student
         filter_fields = {
             'name': ['exact', 'icontains', 'istartswith'],
             'age': ['exact'],            
-            'favorite': ['exact']
         }
-        interfaces = (relay.Node, )
+        interfaces = (relay.Node, )    
+
+class TeacherNode(DjangoObjectType):            
+    class Meta:
+        model = Teacher
+        filter_fields = ['name', 'subject']
+        interfaces = (relay.Node, )  
+    
 
 class Query(graphene.ObjectType):
     teacher = relay.Node.Field(TeacherNode)
@@ -37,7 +35,5 @@ class Query(graphene.ObjectType):
     student = relay.Node.Field(StudentNode)
     all_students = DjangoFilterConnectionField(StudentNode)
 
-    def resolve_favorites(self, info, **kwargs):
-        teacher = Teacher.objects.get(pk=self.id)
-        remarks = Remarks.objects.filter(teacher=teacher)
-        return [each.student for each in remarks]
+    favorites = relay.Node.Field(RemarkNode)
+    all_favorites = DjangoFilterConnectionField(RemarkNode)

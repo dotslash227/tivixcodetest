@@ -24,8 +24,8 @@ class Teacher(models.Model):
 class Remarks(models.Model):
     student = models.ForeignKey(Student, related_name="student", on_delete=models.DO_NOTHING)
     teacher = models.ForeignKey(Teacher, related_name="teacher", on_delete=models.DO_NOTHING)
-    favorite = models.BooleanField(default=False, choices=(
-        (True, "Yes"),
-        (False, "No")
+    favorite = models.CharField(default="False", max_length=10, choices=(
+        ("True", "Yes"),
+        ("False", "No")
     ))
 
