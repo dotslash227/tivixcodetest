@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 from .models import Teacher, Student, Remarks
-from .forms import TeacherForm
+from .forms import TeacherForm, StudentForm
 
 def Home(request):
     return render(request, "index.html", {})
@@ -60,3 +60,18 @@ class TeacherView(View):
         form.save()
 
         return redirect("class:teacher-view", teacher_id=teacher_id)
+
+
+class NewStudent(View):
+    def get(self, request):
+        form = StudentForm()
+
+        return render(request, "addStudent.html", {
+            "form": form
+        })
+
+    def post(self, request):
+        form = StudentForm(request.POST)
+        form.save()
+
+        return redirect("class:index")
