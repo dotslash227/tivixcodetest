@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mt-4">Manage Teacher</h1>    
+    <h4>You are currently editing {{teacher.name}} with id : {{teacher.id}}</h4>
+    <hr />
+    <form name="add-teacher" method="post" action="{% url 'class:teacher-view' teacher.id %}">
+        {% csrf_token %}
+        <div class="row">
+            {% for field in form %}
+                <div class="col-md-4">
+                    {{field.label}} : {{field}}
+                </div>
+            {% endfor %}
+                <div class="col-md-4">
+                    <input type="submit" value="Update" class="btn btn-success" />
+                </div>
+        </div><hr />
+    </form>
+        <h3 class="mt-4">My Students</h3>        
+        <form name="add-student" method="post" action="{% url 'class:add-student-teacher' teacher.id %}">
+            {% csrf_token %}
+            <select name="student">
+                <option>---------------</option>
+                {% for each in students %}                    
+                    <option value="{{each.pk}}">{{each.name}}</option>
+                {% endfor %}
+            </select>       <input type="checkbox" name="fav" />Is Favorite?     <input type="submit" value="Add Student to Teacher" />
+        </form>
+        <div class="row mt-4"> 
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <td>Name</td>
+                    <td>Age</td>
+                    <td>Is Favorite?</td>                    
+                </thead>
+                <tbody>
+                    {% for student in remarks %}
+                    <tr>
+                        <td>{{student.student.name}}</td>
+                        <td>{{student.student.age}}</td>
+                        <td>
+                            <form name="update-favorite" action="{% url 'class:update-teacher-favorite' teacher.id student.student.id %}" method="post">
+                                {% csrf_token %}
+                                <input name="fav-student" type="checkbox" {% if student.favorite %}checked{% endif %} />
+                                <input type="submit" value="Update Favorites" />
+                            </form>
+                        </td>  
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+{% endblock content %}

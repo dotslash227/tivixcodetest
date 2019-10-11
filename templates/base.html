@@ -1,0 +1,65 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Tivix Classroom Management</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static "vendor/bootstrap/css/bootstrap.min.css" %}" rel="stylesheet">
+
+  <!-- Custom styles for this template -->
+  <link href="{% static "css/simple-sidebar.css" %}" rel="stylesheet">
+
+</head>
+
+<body>
+
+    <div class="d-flex" id="wrapper">
+        <!-- Sidebar -->
+        <div class="bg-light border-right" id="sidebar-wrapper">
+            <div class="sidebar-heading">Tivix Classroom Management</div>
+            <div class="list-group list-group-flush">
+                <a href="{% url 'class:add-teacher' %}" class="list-group-item list-group-item-action bg-light">Add Teacher</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">Add Student</a>
+                <a href="{% url 'class:teachers-list' %}" class="list-group-item list-group-item-action bg-light">View/Edit Teachers</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light">View/Edit Students</a>                                
+            </div>
+        </div>
+          <!-- /#sidebar-wrapper -->
+          <div id="page-content-wrapper">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+                        <button class="btn btn-primary" id="menu-toggle">Toggle Menu</button>
+                
+                        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                          <span class="navbar-toggler-icon"></span>
+                        </button>                                    
+                      </nav>
+            <div class="container-fluid">
+                {% block content %}
+                {% endblock content %}
+            </div>
+          </div>
+    </div>
+
+    <script src="{% static "vendor/jquery/jquery.min.js" %}"></script>
+    <script src="{% static "vendor/bootstrap/js/bootstrap.bundle.min.js" %}"></script>
+  
+    <!-- Menu Toggle Script -->
+    <script>
+      $("#menu-toggle").click(function(e) {
+        e.preventDefault();
+        $("#wrapper").toggleClass("toggled");
+      });
+    </script>
+  
+  </body>
+  
+  </html>
+  

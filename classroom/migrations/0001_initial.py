@@ -33,17 +33,17 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=100)),
                 ('subject', models.CharField(choices=[('Maths', 'Maths'), ('Chemistry', 'Chemistry'), ('Physics', 'Physics')], max_length=100)),
-                ('students', models.ManyToManyField(through='class.Remarks', to='class.Student')),
+                ('students', models.ManyToManyField(through='classroom.Remarks', to='class.Student')),
             ],
         ),
         migrations.AddField(
             model_name='remarks',
             name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='student', to='class.Student'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='student', to='classroom.Student'),
         ),
         migrations.AddField(
             model_name='remarks',
             name='teacher',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='teacher', to='class.Teacher'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, related_name='teacher', to='classroom.Teacher'),
         ),
     ]

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mt-4">Teacher's List</h1>
+    <h5>Please click on the teacher name to edit the teacher and manage students</h5>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <td>Name</td>
+            <td>Subject</td>
+        </thead>
+        <tbody>
+            {% for each in teachers %}
+            <tr>
+                <td><a href="{% url 'class:teacher-view' each.id %}">{{each.name}}</a></td>
+                <td>{{each.subject}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
