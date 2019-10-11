@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mt-4">Manage Student</h1>    
+    <h4>You are currently editing {{student.name}} with id : {{student.id}}</h4>
+    <hr />
+    <form name="add-student" method="post" action="{% url 'class:student-view' student.id %}">
+        {% csrf_token %}
+        <div class="row">
+            {% for field in form %}
+                <div class="col-md-4">
+                    {{field.label}} : {{field}}
+                </div>
+            {% endfor %}
+                <div class="col-md-4">
+                    <input type="submit" value="Update" class="btn btn-success" />
+                    <a href="{% url 'class:delete' 'student' student.id %}" class="btn btn-warning">Delete this record</a>
+                </div>
+        </div><hr />
+    </form>
+        <h3 class="mt-4">Teachers Allocated to the student</h3>                
+        <div class="row mt-4"> 
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <td>Name</td>
+                    <td>Subject</td>                    
+                </thead>
+                <tbody>
+                    {% for each in student.teacher_set.all %}
+                    <tr>       
+                        <td>{{each.name}}</td>                                         
+                        <td>{{each.subject}}</td>
+                    </tr>                    
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>        
+{% endblock content %}

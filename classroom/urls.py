@@ -11,4 +11,7 @@ urlpatterns = [
     path('teacher/<int:teacher_id>/add-student', views.addStudentToTeacher, name="add-student-teacher"),
     path('teacher/<int:teacher_id>/update-fav/<int:student_id>', views.updateFavorite, name="update-teacher-favorite"),
     path('add-student', views.NewStudent.as_view(), name="add-student"),
+    path('students-list', views.studentsList, name="students-list"),
+    path('student/<int:student_id>', views.StudentView.as_view(), name="student-view"),
+    path('delete/<str:userType>/<int:id>', views.deleteAction, name="delete"),
 ]

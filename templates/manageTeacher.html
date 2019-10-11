@@ -14,6 +14,7 @@
             {% endfor %}
                 <div class="col-md-4">
                     <input type="submit" value="Update" class="btn btn-success" />
+                    <a href="{% url 'class:delete' 'teacher' teacher.id %}" class="btn btn-warning">Delete this record</a>
                 </div>
         </div><hr />
     </form>

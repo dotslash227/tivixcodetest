@@ -16,15 +16,22 @@ class NewTeacher(View):
     
     def post(self, request):
         form = TeacherForm(request.POST)
-        form.save()
+        teacher = form.save()
 
-        return redirect("class:index")
+        return redirect("class:teacher-view", teacher_id=teacher.id)
 
 def teachersList(request):
     teachers = Teacher.objects.all()
     
     return render(request, "teachersList.html", {
         "teachers": teachers
+    })
+
+def studentsList(request):
+    students = Student.objects.all()
+
+    return render(request, "studentsList.html", {
+        "students": students
     })
 
 def addStudentToTeacher(request, teacher_id):
@@ -72,6 +79,37 @@ class NewStudent(View):
 
     def post(self, request):
         form = StudentForm(request.POST)
-        form.save()
+        student = form.save()
 
-        return redirect("class:index")
+        return redirect("class:student-view", student_id=student.id)
+
+
+class StudentView(View):
+    def get(self, request, student_id):
+        student = Student.objects.get(pk=student_id)
+        form = StudentForm(instance=student)
+
+        return render(request, "manageStudent.html", {
+            "form": form, "student": student
+        })
+
+    def post(self, request, student_id):
+        student = Student.objects.get(pk=student_id)
+        form = StudentForm(request.POST, instance=student)
+
+        return redirect("class:student-view", student_id=student_id)
+
+
+def deleteAction(request, userType, id):
+    if userType == "student":
+        student = Student.objects.get(pk=id)
+        for teacher in student.teacher_set.all():
+            teacher.students.remove(student)
+        student.delete()
+        return redirect("class:students-list")
+    if userType == "teacher":
+        teacher = Teacher.objects.get(pk=id)
+        for student in teacher.students.all():
+            student.teacher_set.remove(teacher)
+        teacher.delete()
+        return redirect("class:teachers-list")

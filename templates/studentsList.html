@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1 class="mt-4">Student's List</h1>
+    <h5>Click on the student name to manage</h5>
+    <table class="table table-bordered table-striped">
+        <thead>
+            <td>Name</td>
+            <td>Age</td>
+        </thead>
+        <tbody>
+            {% for each in students %}
+            <tr>
+                <td><a href="{% url 'class:student-view' each.id %}">{{each.name}}</a></td>
+                <td>{{each.age}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
