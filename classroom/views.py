@@ -54,3 +54,9 @@ class TeacherView(View):
         return render(request, "manageTeacher.html", {
             "teacher": teacher, "form": form, "students": students, "remarks": remarks
         })
+    def post(self, request, teacher_id):
+        teacher = Teacher.objects.get(pk=teacher_id)
+        form = TeacherForm(request.POST, instance=teacher)
+        form.save()
+
+        return redirect("class:teacher-view", teacher_id=teacher_id)

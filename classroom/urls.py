@@ -9,5 +9,5 @@ urlpatterns = [
     path('teachers-list', views.teachersList, name="teachers-list"),
     path('teacher/<int:teacher_id>', views.TeacherView.as_view(), name="teacher-view"),
     path('teacher/<int:teacher_id>/add-student', views.addStudentToTeacher, name="add-student-teacher"),
-    path('teacher/<int:teacher_id>/update-fav/<int:student_id>', views.updateFavorite, name="update-teacher-favorite"),
+    path('teacher/<int:teacher_id>/update-fav/<int:student_id>', views.updateFavorite, name="update-teacher-favorite"),    
 ]
