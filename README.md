@@ -18,4 +18,50 @@ The app comes with a database with test data. So, no need to makemigrations and 
 # GraphQL Queries
 GraphQL browser can be accessed at localhost:8000/graphql or 0.0.0.0:8000/graphql or 127.0.0.1:8000/graphql
 
-Sample Queries for GraphQL
+Sample Queries for GraphQL<br>
+**Fetching all teachers**
+```
+allTeachers{
+  edges{
+    node{
+      name, subject, id
+    }
+  }
+}
+```
+**To get all students in a teacher**
+```
+query{
+  allTeachers{
+    edges{
+      node{
+        name, subject, id
+        students: student{
+          id, name, age
+        }
+      }
+    }
+  }
+}
+```
+**To get all students that have been marked as favorite by the teacher**
+```
+query{
+  allTeachers{
+    edges{
+      node{
+        name, subject
+        teacher(favorite:"TRUE"){
+          edges{
+            node{
+              student{
+                id,name
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
