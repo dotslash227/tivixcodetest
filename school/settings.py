@@ -42,7 +42,7 @@ INSTALLED_APPS = [
 ]
 
 GRAPHENE = {
-    'SCHEMA': 'school.schema.schema'
+    'SCHEMA': 'school.schema.schema'    
 }
 
 MIDDLEWARE = [
