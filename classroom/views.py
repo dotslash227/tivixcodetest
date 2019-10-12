@@ -7,6 +7,7 @@ from .forms import TeacherForm, StudentForm
 def Home(request):
     return render(request, "index.html", {})
 
+# Teacher addition form handler
 class NewTeacher(View):
     def get(self, request):
         form = TeacherForm()
@@ -23,13 +24,14 @@ class NewTeacher(View):
 
         return redirect("class:teacher-view", teacher_id=teacher.id)
 
+# Returning all teachers
 def teachersList(request):
     teachers = Teacher.objects.all()
     
     return render(request, "teachersList.html", {
         "teachers": teachers
     })
-
+# Students List View
 def studentsList(request):
     students = Student.objects.all()
 
@@ -37,6 +39,7 @@ def studentsList(request):
         "students": students
     })
 
+# View to assing teacher to student through the teacher view
 def addStudentToTeacher(request, teacher_id):
     teacher = Teacher.objects.get(pk=teacher_id)
     student = Student.objects.get(pk=request.POST.get("student"))
@@ -48,6 +51,7 @@ def addStudentToTeacher(request, teacher_id):
 
     return redirect("class:teacher-view", teacher_id=teacher_id)
 
+# view to allow the teacher to set a favorite or not
 def updateFavorite(request, teacher_id, student_id):
     teacher = Teacher.objects.get(pk=teacher_id)
     student = Student.objects.get(pk=student_id)
@@ -58,6 +62,7 @@ def updateFavorite(request, teacher_id, student_id):
 
     return redirect("class:teacher-view", teacher_id=teacher_id)
 
+# Teacher view
 class TeacherView(View):
     def get(self, request, teacher_id):
         teacher = Teacher.objects.get(pk=teacher_id)
@@ -112,17 +117,19 @@ class StudentView(View):
 
         return redirect("class:student-view", student_id=student_id)
 
-
+# Delete actions for students or teacher
 def deleteAction(request, userType, id):
     if userType == "student":
         student = Student.objects.get(pk=id)
+        # student has to be un-assigned from all students
         for teacher in student.teacher_set.all():
             teacher.students.remove(student)
         messages.add_message(request, messages.SUCCESS, "Student %s has been deleted" % student.name)
         student.delete()        
-        return redirect("class:students-list")
+        return redirect("class:students-list")    
     if userType == "teacher":
         teacher = Teacher.objects.get(pk=id)
+        # teacher has to be un-assigned from all students first
         for student in teacher.students.all():
             student.teacher_set.remove(teacher)
         messages.add_message(request, messages.SUCCESS, "Teacher %s has been deleted" % teacher.name)

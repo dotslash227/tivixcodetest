@@ -21,6 +21,7 @@ class Teacher(models.Model):
     def __str__(self):
         return self.name
 
+# Table to hold the favorite remark
 class Remarks(models.Model):
     student = models.ForeignKey(Student, related_name="student", on_delete=models.DO_NOTHING)
     teacher = models.ForeignKey(Teacher, related_name="teacher", on_delete=models.DO_NOTHING)
