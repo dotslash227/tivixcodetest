@@ -65,3 +65,6 @@ query{
   }
 }
 ```
+
+# Tests
+Tests can be run by running the command python manage.py tests. Note: The last test is supposed to fail. If it fails, it means it works. Because, the statement that should be returning True is being evaluated using self.assertFalse()
