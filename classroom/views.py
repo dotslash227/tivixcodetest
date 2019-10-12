@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib import messages
 from .models import Teacher, Student, Remarks
 from .forms import TeacherForm, StudentForm
 
@@ -17,6 +18,8 @@ class NewTeacher(View):
     def post(self, request):
         form = TeacherForm(request.POST)
         teacher = form.save()
+
+        messages.add_message(request, messages.SUCCESS, "New teacher added")
 
         return redirect("class:teacher-view", teacher_id=teacher.id)
 
@@ -41,6 +44,8 @@ def addStudentToTeacher(request, teacher_id):
 
     teacher.students.add(student, through_defaults={"favorite":fav})
 
+    messages.add_message(request, messages.SUCCESS, "New student added to the teacher")
+
     return redirect("class:teacher-view", teacher_id=teacher_id)
 
 def updateFavorite(request, teacher_id, student_id):
@@ -48,6 +53,8 @@ def updateFavorite(request, teacher_id, student_id):
     student = Student.objects.get(pk=student_id)
     fav = "True" if request.POST.get("fav-student") else "False"
     Remarks.objects.filter(teacher=teacher, student=student).update(favorite=fav)
+
+    messages.add_message(request, messages.SUCCESS, "Favorites has been updated")
 
     return redirect("class:teacher-view", teacher_id=teacher_id)
 
@@ -66,6 +73,8 @@ class TeacherView(View):
         form = TeacherForm(request.POST, instance=teacher)
         form.save()
 
+        messages.add_message(request, messages.SUCCESS, "Teacher %s has been updated" % teacher.name)
+
         return redirect("class:teacher-view", teacher_id=teacher_id)
 
 
@@ -80,6 +89,8 @@ class NewStudent(View):
     def post(self, request):
         form = StudentForm(request.POST)
         student = form.save()
+
+        messages.add_message(request, messages.SUCCESS, "New student created")
 
         return redirect("class:student-view", student_id=student.id)
 
@@ -97,6 +108,8 @@ class StudentView(View):
         student = Student.objects.get(pk=student_id)
         form = StudentForm(request.POST, instance=student)
 
+        messages.add_message(request, messages.SUCCESS, "Student %s has been updated" % student.name)
+
         return redirect("class:student-view", student_id=student_id)
 
 
@@ -105,11 +118,13 @@ def deleteAction(request, userType, id):
         student = Student.objects.get(pk=id)
         for teacher in student.teacher_set.all():
             teacher.students.remove(student)
-        student.delete()
+        messages.add_message(request, messages.SUCCESS, "Student %s has been deleted" % student.name)
+        student.delete()        
         return redirect("class:students-list")
     if userType == "teacher":
         teacher = Teacher.objects.get(pk=id)
         for student in teacher.students.all():
             student.teacher_set.remove(teacher)
+        messages.add_message(request, messages.SUCCESS, "Teacher %s has been deleted" % teacher.name)
         teacher.delete()
         return redirect("class:teachers-list")

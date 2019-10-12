@@ -39,8 +39,15 @@
                 
                         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                           <span class="navbar-toggler-icon"></span>
-                        </button>                                    
-                      </nav>
+                        </button>
+                </nav>
+                {% if messages %}
+                  {% for each in messages %}
+                    <div class="message-tab" style="background-color:green; color:white; font-size:20px; text-align: center; padding:2px;">                
+                      <p>{{each}}</p>
+                    </div>
+                  {% endfor %}
+                {% endif %}
             <div class="container-fluid">
                 {% block content %}
                 {% endblock content %}
