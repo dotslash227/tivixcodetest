@@ -43,7 +43,7 @@
                         <td>
                             <form name="update-favorite" action="{% url 'class:update-teacher-favorite' teacher.id student.student.id %}" method="post">
                                 {% csrf_token %}
-                                <input name="fav-student" type="checkbox" {% if student.favorite %}checked{% endif %} />
+                                <input name="fav-student" type="checkbox" {% if student.favorite == "True" %}checked{% endif %} />
                                 <input type="submit" value="Update Favorites" />
                             </form>
                         </td>  
